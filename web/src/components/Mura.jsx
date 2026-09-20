@@ -26,8 +26,8 @@ export default function Mura({ site, enabled, onDismiss }) {
   if (!site) return null;
 
   const greeting = enabled
-    ? 'Let me tell you about this place...'
-    : 'I am resting. Set GEMINI_API_KEY on the server and restart it to wake me.';
+    ? `Hi, I'm Mura, your guide to ${site.name}. Ask me anything, or tap a question below to begin.`
+    : 'I am resting. Set LLM_API_KEY on the server and restart it to wake me.';
 
   return (
     <div className="pointer-events-none absolute right-4 bottom-4 z-[500] flex flex-col items-end gap-1.5 lg:bottom-36">
@@ -111,7 +111,10 @@ export default function Mura({ site, enabled, onDismiss }) {
             className="flex gap-1.5 border-t border-slate-800 p-2"
             onSubmit={(event) => {
               event.preventDefault();
-              if (draft.trim() && !busy && enabled) {
+              // Sending while Mura is still working is fine: send() aborts the
+              // in-flight request first, so a slow opening summary never blocks
+              // the visitor from asking their own question.
+              if (draft.trim() && enabled) {
                 send(draft);
                 setDraft('');
               }
@@ -122,12 +125,12 @@ export default function Mura({ site, enabled, onDismiss }) {
               onChange={(event) => setDraft(event.target.value)}
               placeholder={enabled ? 'Ask Mura anything...' : 'Guide offline'}
               maxLength={1000}
-              disabled={busy || !enabled}
+              disabled={!enabled}
               className="min-w-0 flex-1 rounded-lg border border-slate-700/80 bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 transition-colors focus:border-amber-500 focus:outline-none disabled:opacity-50"
             />
             <button
               type="submit"
-              disabled={busy || !draft.trim() || !enabled}
+              disabled={!draft.trim() || !enabled}
               className="cursor-pointer rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-950 transition-colors hover:bg-amber-400 disabled:cursor-default disabled:opacity-40"
             >
               Ask

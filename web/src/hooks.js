@@ -14,24 +14,33 @@ export function useDebounced(value, delay = 300) {
 }
 
 /**
- * The Gemini-backed conversation about one site.
+ * Generic, site-agnostic openers shown the moment the guide appears. They are
+ * static, so displaying them costs nothing -- the model is only ever called once
+ * the visitor sends (or taps) an actual question.
+ */
+const STARTER_QUESTIONS = [
+  'Tell me about this place.',
+  'Why is it historically important?',
+  'What should I look for here?',
+];
+
+/**
+ * The conversation about one site, backed by the NaviGator (LiteLLM) gateway.
  *
- * Opening a site asks the API for its summary -- an empty message means
- * "introduce this place" -- and every later turn carries the prior history so
- * the model keeps context. Site facts come from the catalogue server-side, so
- * nothing here can feed the model invented details.
+ * Selecting a site does NOT call the model: it just resets to a generic greeting
+ * plus the starter questions above, so no tokens are spent until the visitor
+ * asks something. Every real turn carries the prior history so the model keeps
+ * context. Site facts come from the catalogue server-side, so nothing here can
+ * feed the model invented details.
  */
 export function useGuide(site, enabled) {
   const [messages, setMessages] = useState([]);
-  const [followUps, setFollowUps] = useState([]);
+  const [followUps, setFollowUps] = useState(STARTER_QUESTIONS);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
 
   const controllerRef = useRef(null);
   const messagesRef = useRef(messages);
-  // Guards the opening request against StrictMode's double-invoked effects,
-  // which would otherwise spend two Gemini calls on every mount.
-  const openedFor = useRef(null);
 
   messagesRef.current = messages;
 
@@ -39,13 +48,15 @@ export function useGuide(site, enabled) {
 
   const send = useCallback(
     async (text) => {
-      if (!siteId) return;
-
       const outgoing = text?.trim() ?? '';
+      // No site, no question, no call -- this is what keeps load-time token use at
+      // zero: the greeting and starters never reach the model.
+      if (!siteId || !outgoing) return;
+
       // Read through a ref so `send` stays stable and effects do not re-fire.
       const history = messagesRef.current;
 
-      if (outgoing) setMessages((prev) => [...prev, { role: 'user', content: outgoing }]);
+      setMessages((prev) => [...prev, { role: 'user', content: outgoing }]);
       setFollowUps([]);
       setError(null);
       setStatus('loading');
@@ -55,15 +66,18 @@ export function useGuide(site, enabled) {
       controllerRef.current = controller;
 
       try {
-        const payload = await askGuide(
-          { siteId, message: outgoing, history },
-          controller.signal,
-        );
+        const payload = await askGuide({ siteId, message: outgoing, history }, controller.signal);
         setMessages((prev) => [...prev, { role: 'model', content: payload.data.reply }]);
         setFollowUps(payload.data.followUps ?? []);
         setStatus('idle');
       } catch (cause) {
-        if (cause?.name === 'AbortError') return;
+        if (cause?.name === 'AbortError') {
+          // If a newer request already replaced this controller, that request owns
+          // the loading state. Otherwise (e.g. aborted by a site switch) release
+          // the spinner back to idle so the guide is never wedged.
+          if (controllerRef.current === controller) setStatus('idle');
+          return;
+        }
         setError(cause.message);
         setStatus('error');
       }
@@ -71,18 +85,31 @@ export function useGuide(site, enabled) {
     [siteId],
   );
 
+  // Switching sites resets to the generic starter state. This never calls the
+  // model, so opening a new pin costs nothing until the visitor speaks.
   useEffect(() => {
-    if (!siteId || !enabled) return;
-    if (openedFor.current === siteId) return;
-    openedFor.current = siteId;
-
+    controllerRef.current?.abort();
     messagesRef.current = [];
     setMessages([]);
-    setFollowUps([]);
-    send('');
-  }, [siteId, enabled, send]);
+    setFollowUps(STARTER_QUESTIONS);
+    setError(null);
+    setStatus('idle');
+  }, [siteId]);
 
   useEffect(() => () => controllerRef.current?.abort(), []);
+
+  // Re-send the last question the visitor asked, dropping the failed turn first so
+  // it is not duplicated in the thread.
+  const retry = useCallback(() => {
+    const prev = messagesRef.current;
+    const idx = prev.map((m) => m.role).lastIndexOf('user');
+    if (idx < 0) return;
+    const content = prev[idx].content;
+    const trimmed = prev.slice(0, idx);
+    messagesRef.current = trimmed;
+    setMessages(trimmed);
+    send(content);
+  }, [send]);
 
   return {
     messages,
@@ -91,6 +118,6 @@ export function useGuide(site, enabled) {
     status,
     busy: status === 'loading',
     send,
-    retry: () => send(''),
+    retry,
   };
 }
