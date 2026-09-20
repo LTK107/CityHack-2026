@@ -1,4 +1,4 @@
-# Tanit XR
+# Mura's World
 
 An interactive map of 3D-scanned archaeological heritage across Tunisia. The map
 fills the left half of the screen; **Mura**, a liteLLM-backed guide, stands in the
