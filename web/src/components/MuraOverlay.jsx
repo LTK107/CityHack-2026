@@ -39,7 +39,7 @@ export default function MuraOverlay({ site, enabled }) {
           <div ref={threadRef} className="max-h-[38vh] min-h-0 space-y-2 overflow-y-auto px-4 py-3">
             {!enabled && (
               <p className="rounded-xl border border-stone-200 bg-stone-100/60 p-3 text-xs leading-relaxed text-stone-500">
-                I am resting. Set <code className="text-amber-600">GEMINI_API_KEY</code> in{' '}
+                I am resting. Set <code className="text-amber-600">LLM_API_KEY</code> in{' '}
                 <code className="text-amber-600">server/.env</code> and restart the API to wake me.
               </p>
             )}

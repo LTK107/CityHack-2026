@@ -47,22 +47,22 @@ export function useRoute() {
 /**
  * The Gemini-backed conversation about one site.
  *
- * Opening a site asks the API for its summary -- an empty message means
- * "introduce this place" -- and every later turn carries the prior history so
- * the model keeps context. Site facts come from the catalogue server-side, so
- * nothing here can feed the model invented details.
+ * Opening a site shows a local greeting immediately. Only visitor questions
+ * call the API, carrying prior history so the model keeps context. Site facts
+ * come from the catalogue server-side.
  */
 export function useGuide(site, enabled) {
-  const [messages, setMessages] = useState([]);
+  const greeting = () => [{
+    role: 'model',
+    content: "Hi, I'm Mura! What would you like to know about this place?",
+  }];
+  const [messages, setMessages] = useState(greeting);
   const [followUps, setFollowUps] = useState([]);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
 
   const controllerRef = useRef(null);
   const messagesRef = useRef(messages);
-  // Guards the opening request against StrictMode's double-invoked effects,
-  // which would otherwise spend two Gemini calls on every mount.
-  const openedFor = useRef(null);
 
   messagesRef.current = messages;
 
@@ -70,7 +70,7 @@ export function useGuide(site, enabled) {
 
   const send = useCallback(
     async (text) => {
-      if (!siteId) return;
+      if (!siteId || !enabled) return;
 
       const outgoing = text?.trim() ?? '';
       // Read through a ref so `send` stays stable and effects do not re-fire.
@@ -99,19 +99,18 @@ export function useGuide(site, enabled) {
         setStatus('error');
       }
     },
-    [siteId],
+    [siteId, enabled],
   );
 
   useEffect(() => {
-    if (!siteId || !enabled) return;
-    if (openedFor.current === siteId) return;
-    openedFor.current = siteId;
-
-    messagesRef.current = [];
-    setMessages([]);
+    controllerRef.current?.abort();
+    const initialMessages = greeting();
+    messagesRef.current = initialMessages;
+    setMessages(initialMessages);
     setFollowUps([]);
-    send('');
-  }, [siteId, enabled, send]);
+    setError(null);
+    setStatus('idle');
+  }, [siteId]);
 
   useEffect(() => () => controllerRef.current?.abort(), []);
 
