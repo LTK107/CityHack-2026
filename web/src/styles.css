@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
-/* The app owns the viewport: the map and the inspector scroll, the page does not. */
+/* The warm canvas the whole app sits on. */
+@theme {
+  --color-canvas: #f7f3ec;
+}
+
+/* The app owns the viewport: the map and the panels scroll, the page does not. */
 html,
 body,
 #root {
@@ -9,6 +14,8 @@ body,
 
 body {
   margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-stone-900);
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
@@ -22,7 +29,7 @@ body {
 
 .leaflet-container {
   font: inherit;
-  background: var(--color-slate-950);
+  background: var(--color-stone-200);
 }
 
 /* Leaflet paints every div icon with a white box and a border; ours is an SVG. */
@@ -31,7 +38,7 @@ body {
   border: none;
   /* A CSS drop-shadow instead of an in-SVG filter, so markers do not each emit
      an element with the same id. */
-  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 45%));
+  filter: drop-shadow(0 2px 3px rgb(87 70 55 / 35%));
   transition: transform 140ms ease;
   transform-origin: 50% 100%;
 }
@@ -42,10 +49,10 @@ body {
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: var(--color-slate-900);
-  color: var(--color-slate-100);
-  border: 1px solid var(--color-slate-700);
-  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 45%);
+  background: #fff;
+  color: var(--color-stone-800);
+  border: 1px solid var(--color-stone-300);
+  box-shadow: 0 10px 25px -5px rgb(87 70 55 / 20%);
 }
 
 .leaflet-popup-content-wrapper {
@@ -59,26 +66,27 @@ body {
 }
 
 .leaflet-popup-close-button {
-  color: var(--color-slate-400) !important;
+  color: var(--color-stone-500) !important;
 }
 
 .leaflet-control-zoom a {
-  background: var(--color-slate-900);
-  color: var(--color-slate-200);
-  border-color: var(--color-slate-700);
+  background: #fff;
+  color: var(--color-stone-700);
+  border-color: var(--color-stone-300);
 }
 
 .leaflet-control-zoom a:hover {
-  background: var(--color-slate-800);
+  background: var(--color-stone-100);
+  color: var(--color-stone-900);
 }
 
 .leaflet-control-attribution {
-  background: rgb(15 23 42 / 85%) !important;
-  color: var(--color-slate-400) !important;
+  background: rgb(255 255 255 / 85%) !important;
+  color: var(--color-stone-500) !important;
 }
 
 .leaflet-control-attribution a {
-  color: var(--color-slate-300) !important;
+  color: var(--color-stone-600) !important;
 }
 
 /* --- Scrollbars ---------------------------------------------------------- */
@@ -93,12 +101,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-slate-700);
+  background: var(--color-stone-300);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-slate-600);
+  background: var(--color-stone-400);
 }
 
 .scrollbar-none {

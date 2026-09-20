@@ -1,62 +1,506 @@
 [
   {
-    "id": "stone-basin-water-temple",
+    "id": 1,
     "name": "Stone Basin – Water Temple",
     "location": "Zaghouan",
     "lat": 36.3986,
     "lng": 10.1069,
-    "sketchfabUid": "27c2c2c4260b4b529b8692d93dec841b",
+    "uid": "27c2c2c4260b4b529b8692d93dec841b",
     "category": "Roman",
     "era": "2nd Century AD",
     "context": "A carved stone basin located at the Roman Temple of Water in Zaghouan. This site collected mountain spring waters to supply ancient Carthage through a 132km-long aqueduct system, representing one of the greatest hydraulic engineering feats of antiquity.",
-    "highlights": ["Sanctuary of Nymphs", "Aqueduct Source", "Carved Limestone Architecture"]
+    "highlights": [
+      "Sanctuary of Nymphs",
+      "Aqueduct Source",
+      "Carved Limestone Architecture"
+    ],
+    "suggestedQuestions": [
+      "How far did the water travel from Zaghouan to Carthage?",
+      "What was the religious importance of the Nymphaeum?",
+      "How was this 3D model scanned?"
+    ]
   },
   {
-    "id": "traditional-door-medina",
+    "id": 2,
     "name": "Traditional Door – Medina of Tunis",
     "location": "Tunis Medina",
     "lat": 36.7989,
     "lng": 10.1707,
-    "sketchfabUid": "fc33fb7304074639ba0d2736b665e8fd",
+    "uid": "fc33fb7304074639ba0d2736b665e8fd",
     "category": "Architecture",
     "era": "Ottoman / Vernacular",
     "context": "A classic studded yellow wooden door inside the UNESCO World Heritage Medina of Tunis. Featuring heavy black iron studs, symbol motifs (like the hand of Fatima or fish for good fortune), and two or three distinct knocker rings for guests, family, or servants.",
-    "highlights": ["Wrought-Iron Black Studs", "Yellow Ochre Finish", "Symbolic Door Knockers"]
+    "highlights": [
+      "Wrought-Iron Black Studs",
+      "Yellow Ochre Finish",
+      "Symbolic Door Knockers"
+    ],
+    "suggestedQuestions": [
+      "Why are there different door knockers on traditional Medina doors?",
+      "What do the black iron stud patterns signify?",
+      "What materials were used in creating these doors?"
+    ]
   },
   {
-    "id": "tanit-stela-tophet",
+    "id": 3,
     "name": "Tanit Stela – Tophet of Salammbo",
     "location": "Carthage",
     "lat": 36.8403,
     "lng": 10.3228,
-    "sketchfabUid": "71e2a8a4ac67450c9fe375e183979ac0",
+    "uid": "71e2a8a4ac67450c9fe375e183979ac0",
     "category": "Punic",
     "era": "4th–3rd Century BC",
     "context": "A Punic votive stela from the sacred Tophet of Salammbo in ancient Carthage. Carved with the sacred Sign of Tanit—the chief goddess of fertility and the heavens in Carthaginian mythology—alongside crescent moon iconography.",
-    "highlights": ["Sign of Tanit Emblem", "Punic Votive Marker", "Sacred Sanctuary Site"]
+    "highlights": [
+      "Sign of Tanit Emblem",
+      "Punic Votive Marker",
+      "Sacred Sanctuary Site"
+    ],
+    "suggestedQuestions": [
+      "Who was Goddess Tanit in Carthaginian culture?",
+      "What does the Sign of Tanit symbol represent?",
+      "What role did the Tophet of Salammbo play in antiquity?"
+    ]
   },
   {
-    "id": "ornamental-mihrab-slimanya",
+    "id": 4,
     "name": "Ornamental Mihrab – Medersa Slimanya",
     "location": "Tunis Medina",
     "lat": 36.7972,
     "lng": 10.1712,
-    "sketchfabUid": "11f7430ffd5e4c93858e1c3ec47a6969",
+    "uid": "11f7430ffd5e4c93858e1c3ec47a6969",
     "category": "Islamic",
     "era": "1754 AD (Husainid Dynasty)",
     "context": "An intricate ornamental prayer niche (Mihrab) located inside Medersa Slimanya in the Medina of Tunis. Built by Ali Pasha in memory of his son, featuring polychrome marble paneling, hand-carved stucco artwork, and geometric calligraphy.",
-    "highlights": ["Husainid Stucco Carvings", "Polychrome Marble Interiors", "Geometric Islamic Calligraphy"]
+    "highlights": [
+      "Husainid Stucco Carvings",
+      "Polychrome Marble Interiors",
+      "Geometric Islamic Calligraphy"
+    ],
+    "suggestedQuestions": [
+      "What was Medersa Slimanya used for in the 18th century?",
+      "What architectural influences are seen in Husainid stucco work?",
+      "What orientation does the Mihrab indicate?"
+    ]
   },
   {
-    "id": "roman-togatus-byrsa",
+    "id": 5,
     "name": "Roman Togatus Statue – Byrsa Hill",
     "location": "Carthage Museum",
     "lat": 36.8525,
     "lng": 10.3236,
-    "sketchfabUid": "6999dd0aa173410d8e7589a91bf8c986",
+    "uid": "6999dd0aa173410d8e7589a91bf8c986",
     "category": "Roman",
     "era": "2nd Century AD",
     "context": "A magnificent life-sized marble statue depicting a Roman official or dignitary wearing a formal toga (Togatus). Discovered on Byrsa Hill, the acropolis of ancient Carthage, highlighting imperial Roman presence and artistry in North Africa.",
-    "highlights": ["Proconsular Carthage Marble", "Intricate Drapery Sculpture", "Byrsa Hill Discovery"]
+    "highlights": [
+      "Proconsular Carthage Marble",
+      "Intricate Drapery Sculpture",
+      "Byrsa Hill Discovery"
+    ],
+    "suggestedQuestions": [
+      "Who might this Roman Togatus statue represent?",
+      "Why was Byrsa Hill central to both Punic and Roman Carthage?",
+      "How was Roman marble statuary sculpted in North Africa?"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Amphitheatre Mosaic – Genius of the Seasons",
+    "location": "El Jem, Mahdia",
+    "lat": 35.2965,
+    "lng": 10.7069,
+    "uid": "d8626ad8a85d4bd3a3b53a0eaae76bf1",
+    "category": "Roman",
+    "era": "2nd Century AD",
+    "context": "A vibrant polychrome Roman floor mosaic discovered in Thysdrus (modern El Jem). Depicting the 'Genius of the Year' surrounded by allegorical figures of the four seasons, retrieved near the majestic Colosseum of El Jem, the 3rd largest amphitheatre in the Roman Empire.",
+    "highlights": [
+      "Colosseum of Thysdrus Context",
+      "Allegorical Four Seasons",
+      "Fine Tesserae Craftsmanship"
+    ],
+    "suggestedQuestions": [
+      "How does the El Jem Amphitheatre compare to Rome's Colosseum?",
+      "What symbolism is embedded in the Genius of the Seasons mosaic?",
+      "Why was Thysdrus such a wealthy Roman olive-oil hub?"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Capitol Temple & Forum – Thugga",
+    "location": "Dougga, Téboursouk",
+    "lat": 36.4225,
+    "lng": 9.2203,
+    "uid": "473ea80d76074218b0fae0ddf4aa3e84",
+    "category": "Roman",
+    "era": "166 AD",
+    "context": "The imposing Capitolian Temple dedicated to Jupiter, Juno, and Minerva in ancient Thugga (Dougga). Regarded as the best-preserved small Roman town in North Africa, featuring Corinthian porticoes overlooking the lush Teboursouk valley.",
+    "highlights": [
+      "Corinthian Portico Pediment",
+      "UNESCO World Heritage Site",
+      "Jupiter, Juno, Minerva Triad"
+    ],
+    "suggestedQuestions": [
+      "Why is Dougga considered the best-preserved Roman town in North Africa?",
+      "What unique Libyco-Punic monuments exist alongside the Roman Capitol?",
+      "How were Corinthian columns transported and raised in inland Numidia?"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Subterranean Villa of Amphitrite",
+    "location": "Bulla Regia, Jendouba",
+    "lat": 36.5575,
+    "lng": 8.7558,
+    "uid": "f263eb8d630c458f9c747380e803fd33",
+    "category": "Roman",
+    "era": "3rd Century AD",
+    "context": "Architectural fragment scan from the unique subterranean Roman villas of Bulla Regia. To escape the intense summer heat of North Africa, Roman aristocrats constructed subterranean living quarters equipped with mosaic floors, light wells, and natural cooling wells.",
+    "highlights": [
+      "Underground Domestic Architecture",
+      "Thermal Regulation Design",
+      "Marine Mosaic Pavements"
+    ],
+    "suggestedQuestions": [
+      "Why did Romans build underground homes specifically in Bulla Regia?",
+      "How did light wells illuminate subterranean rooms without glass?",
+      "What mosaics were discovered in the Villa of Amphitrite?"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Triumphal Arch of Antoninus Pius",
+    "location": "Sbeitla (Sufetula)",
+    "lat": 35.2397,
+    "lng": 9.1281,
+    "uid": "92d242efbd21464c8d506e7a27e85744",
+    "category": "Roman",
+    "era": "139 AD",
+    "context": "The gateway arch leading into the grand Forum of Sufetula (Sbeitla). Sufetula is famous for its three side-by-side Capitolian temples and its crucial role during the Byzantine era where Patrician Gregory declared independence before the early Islamic conquests.",
+    "highlights": [
+      "Triple Capitol Temples",
+      "Byzantine Fortifications",
+      "Monumental Forum Gateway"
+    ],
+    "suggestedQuestions": [
+      "Why are there three separate temples in Sufetula's forum instead of one?",
+      "What historic battle took place at Sufetula in 647 AD?",
+      "How did olive oil trade fund Sbeitla's urban monuments?"
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Ribat Watchtower & Fortress",
+    "location": "Sousse Medina",
+    "lat": 35.8278,
+    "lng": 10.6386,
+    "uid": "fc33fb7304074639ba0d2736b665e8fd",
+    "category": "Islamic",
+    "era": "821 AD (Aghlabid Era)",
+    "context": "A fortified monastic coastal fortress (Ribat) in Sousse built by the Aghlabid emir Ziyadat Allah I. Served dual roles as a military lookout against maritime raids and a quiet retreat for religious ascetic warriors (Murabitun).",
+    "highlights": [
+      "Aghlabid Military Architecture",
+      "Nador Watchtower",
+      "UNESCO Medina Surroundings"
+    ],
+    "suggestedQuestions": [
+      "What was the dual spiritual and military role of a Ribat?",
+      "How did watchtowers communicate signals along the North African coast?",
+      "What design elements distinguish Aghlabid masonry?"
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Punic Coastal Villa & Tophet Ruins",
+    "location": "Kerkouane, Cap Bon",
+    "lat": 36.9631,
+    "lng": 11.0986,
+    "uid": "71e2a8a4ac67450c9fe375e183979ac0",
+    "category": "Punic",
+    "era": "6th–3rd Century BC",
+    "context": "Votive artifact from UNESCO Kerkouane, the purest surviving example of a Carthaginian Punic town. Uniquely, Kerkouane was abandoned after the First Punic War and never rebuilt by Romans, offering intact street grids, bath tubs, and red stucco floors.",
+    "highlights": [
+      "Pure Punic Urban Layout",
+      "Terracotta Hip Baths",
+      "Pre-Roman Mosaic Floor Stucco"
+    ],
+    "suggestedQuestions": [
+      "Why is Kerkouane historically unique compared to Carthage or Utique?",
+      "What features characterized ancient Punic domestic bathrooms?",
+      "How was purple dye produced in Cap Bon near Kerkouane?"
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Subterranean Troglodyte Home",
+    "location": "Matmata, Gabès",
+    "lat": 33.5422,
+    "lng": 9.9672,
+    "uid": "6999dd0aa173410d8e7589a91bf8c986",
+    "category": "Architecture",
+    "era": "Indigenous Amazigh / Vernacular",
+    "context": "An underground pit house carved vertically into sandstone soil by Amazigh communities in Matmata. A central circular courtyard open to the sky connects to subterranean rooms, providing passive thermal protection from desert temperature extremes.",
+    "highlights": [
+      "Amazigh Cave Architecture",
+      "Natural Thermal Mass Insulation",
+      "Central Courtyard Pit"
+    ],
+    "suggestedQuestions": [
+      "How do troglodyte pit houses maintain cool temperatures year-round?",
+      "What cultural traditions belong to the Amazigh dwellers of Matmata?",
+      "How did these homes inspire iconic science fiction cinema sets?"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Ksar Ouled Soltane Granary",
+    "location": "Tataouine",
+    "lat": 32.7883,
+    "lng": 10.5147,
+    "uid": "11f7430ffd5e4c93858e1c3ec47a6969",
+    "category": "Architecture",
+    "era": "15th–19th Century",
+    "context": "A multi-story fortified Berber granary (Ksar) featuring vaulted storage cells (Ghorfas) stacked four stories high around two cobblestone courtyards. Nomadic tribes used it to store grains, olives, and valuables securely against desert raids.",
+    "highlights": [
+      "Multi-Tier Ghorfa Storage",
+      "Fortified Desert Architecture",
+      "Amazigh Tribal Grain Bank"
+    ],
+    "suggestedQuestions": [
+      "How were Ghorfa storage vaults constructed without wooden scaffolding?",
+      "What role did Ksour play in semi-nomadic desert trade routes?",
+      "What materials keep grain dry and pest-free inside a Ghorfa?"
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Numidian Royal Stele & Quarry",
+    "location": "Chemtou (Simitthus)",
+    "lat": 36.4914,
+    "lng": 8.5742,
+    "uid": "27c2c2c4260b4b529b8692d93dec841b",
+    "category": "Punic",
+    "era": "2nd Century BC",
+    "context": "A carved relief stele from Chemtou, celebrated for its ancient quarries of 'Marmor Numidicum' (Giallo Antico yellow marble). Highly prized by Roman emperors to decorate palaces, pantheons, and temples across the Mediterranean.",
+    "highlights": [
+      "Marmor Numidicum Yellow Marble",
+      "King Micipsa Numidian Sanctuary",
+      "Ancient Quarry Labor Camps"
+    ],
+    "suggestedQuestions": [
+      "Why was Chemtou's yellow marble so prized across the Roman Empire?",
+      "What Numidian royal monuments were built atop the Chemtou ridge?",
+      "How was stone extracted and shipped down the Medjerda river?"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Ancient Port & Necropolis",
+    "location": "Utique (Utica, Bizerte)",
+    "lat": 37.0583,
+    "lng": 10.0619,
+    "uid": "d36d177f1b5b44ed992daea8b9bcaccd",
+    "category": "Punic",
+    "era": "8th Century BC",
+    "context": "Relic scan from Utique (Utica), founded by Phoenician traders from Tyre around 1100 BC—predating Carthage. Utica was a major maritime port until river siltation moved the coastline 10km away, preserving its Punic necropolis and Roman House of the Cascade.",
+    "highlights": [
+      "First Phoenician Colony in North Africa",
+      "House of the Cascade Mosaics",
+      "Punic Sarcophagi & Tombs"
+    ],
+    "suggestedQuestions": [
+      "Why was Utica founded before Carthage?",
+      "How did geography and river siltation change Utica's shoreline?",
+      "What famous Roman statesman (Cato the Younger) died at Utica?"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "El Ghriba Synagogue Sanctuary",
+    "location": "Djerba Island",
+    "lat": 33.8058,
+    "lng": 10.8589,
+    "uid": "fc33fb7304074639ba0d2736b665e8fd",
+    "category": "Architecture",
+    "era": "586 BC Foundation (19th C. Rebuilt)",
+    "context": "The sacred interior of El Ghriba Synagogue in Erriadh, Djerba—the oldest synagogue in North Africa. Tradition holds that its foundation contains a stone from Solomon's First Temple in Jerusalem, featuring blue tilework, wood paneling, and silver Torah cases.",
+    "highlights": [
+      "North Africa's Oldest Synagogue",
+      "Djerban Jewish Pilgrimage Site",
+      "Blue Faience Tilework"
+    ],
+    "suggestedQuestions": [
+      "What legend links Djerba's Jewish community to Solomon's Temple?",
+      "What takes place during the annual Lag BaOmer pilgrimage to El Ghriba?",
+      "How did Djerba foster coexisting multicultural heritage for centuries?"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Borj El Kebir Marine Fortress",
+    "location": "Mahdia",
+    "lat": 35.5056,
+    "lng": 11.0722,
+    "uid": "27c2c2c4260b4b529b8692d93dec841b",
+    "category": "Islamic",
+    "era": "16th Century Ottoman",
+    "context": "A massive 16th-century Ottoman fort erected on the narrow peninsula of Mahdia, near the ancient Fatimid military harbor. Mahdia served as the first capital of the Fatimid Caliphate in the 10th century before they founded Cairo.",
+    "highlights": [
+      "Fatimid Dynasty First Capital",
+      "Ottoman Coastal Battery",
+      "Skifa El Kahla Gateway"
+    ],
+    "suggestedQuestions": [
+      "Why did the Fatimids choose Mahdia as their capital peninsula?",
+      "What makes the Skifa El Kahla gate fortress structurally unique?",
+      "How was the ancientFatimid navy harbored here?"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Traditional Brickwork Architecture",
+    "location": "Tozeur Oasis",
+    "lat": 33.9197,
+    "lng": 8.1336,
+    "uid": "6999dd0aa173410d8e7589a91bf8c986",
+    "category": "Architecture",
+    "era": "14th Century Vernacular",
+    "context": "A decorative geometric brick wall pattern characteristic of the Ouled el-Hadef quarter in Tozeur. Kiln-baked yellow mud bricks are arranged in relief patterns creating intricate shadows that cool wall surfaces in the Sahara.",
+    "highlights": [
+      "Sahara Yellow Mud Brickwork",
+      "Geometric Relief Shadows",
+      "Ouled el-Hadef Medina"
+    ],
+    "suggestedQuestions": [
+      "How do relief brick patterns cool building walls in Tozeur?",
+      "How is irrigation structured in the vast palm groves of Tozeur?",
+      "What local materials are used to bake these specialized clay bricks?"
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Antonin Baths Shoreline Ruins",
+    "location": "Carthage Shoreline",
+    "lat": 36.8539,
+    "lng": 10.3331,
+    "uid": "d36d177f1b5b44ed992daea8b9bcaccd",
+    "category": "Roman",
+    "era": "162 AD",
+    "context": "An architectural relief block from the Baths of Antoninus in Carthage, the largest Roman thermal bath complex built on African soil. Driven by sea water desalination and aqueduct supply, the frigidarium columns once stood over 15 meters high.",
+    "highlights": [
+      "Largest Imperial Baths in Africa",
+      "Oceanfront Frigidarium",
+      "Monolithic Red Granite Columns"
+    ],
+    "suggestedQuestions": [
+      "How did Romans heat and circulate water through the Antonine Baths?",
+      "Where did the huge red granite columns originate?",
+      "How was the complex supplied with fresh water from Zaghouan?"
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Ribat Fortress & Sea Gate",
+    "location": "Monastir",
+    "lat": 35.7761,
+    "lng": 10.8328,
+    "uid": "11f7430ffd5e4c93858e1c3ec47a6969",
+    "category": "Islamic",
+    "era": "796 AD (Abbasid Era)",
+    "context": "The magnificent coastal Ribat of Monastir, founded by Harthama ibn A'yan. It is the oldest and largest Islamic fortification in North Africa, expanding across centuries with multiple courtyards, prayer halls, and a spiraling observation tower.",
+    "highlights": [
+      "Oldest Islamic Fort in Maghreb",
+      "Helical Nador Tower",
+      "Abbasid & Fatimid Expansions"
+    ],
+    "suggestedQuestions": [
+      "How did Monastir's Ribat evolve from Abbasid to Ottoman rule?",
+      "What view does the Nador tower provide across the Gulf of Hammamet?",
+      "Why was Monastir considered a holy garrison town?"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Genoese Citadel & Needle Rocks",
+    "location": "Tabarka",
+    "lat": 36.9583,
+    "lng": 8.7561,
+    "uid": "27c2c2c4260b4b529b8692d93dec841b",
+    "category": "Architecture",
+    "era": "16th Century (Lomellini Family)",
+    "context": "The island castle of Tabarka overlooking the coral coast. Granted to the Genoese Lomellini family by Charles V in 1540 for coral fishing rights, this fortress guarded the northwest harbor against Barbary corsairs.",
+    "highlights": [
+      "Genoese Island Fortress",
+      "Mediterranean Coral Trade",
+      "Sharp Monolithic Rock Needles"
+    ],
+    "suggestedQuestions": [
+      "What role did Tabarka play in Mediterranean coral trade history?",
+      "How did the Genoese fort defend the northwestern Tunisian coast?",
+      "How were the famous Tabarka Needle rocks formed?"
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Lattice Window & Moucharabieh",
+    "location": "Sidi Bou Said",
+    "lat": 36.8703,
+    "lng": 10.3472,
+    "uid": "fc33fb7304074639ba0d2736b665e8fd",
+    "category": "Architecture",
+    "era": "18th–19th Century",
+    "context": "A classic blue wooden Moucharabieh window from the clifftop village of Sidi Bou Said. Painted in signature cobalt blue against whitewashed plaster walls, designed for privacy, natural ventilation, and sea breeze circulation.",
+    "highlights": [
+      "Cobalt Blue & Whitewash Palette",
+      "Intricate Lattice Privacy Grill",
+      "Cliffside Village Aesthetics"
+    ],
+    "suggestedQuestions": [
+      "Who established the blue and white architectural standard in Sidi Bou Said?",
+      "How does a Moucharabieh window allow ventilation without losing privacy?",
+      "Why did artists like Paul Klee fall in love with this village?"
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Reclining Votive Figure Sculpture",
+    "location": "Byrsa Hill, Carthage",
+    "lat": 36.853,
+    "lng": 10.3248,
+    "uid": "d36d177f1b5b44ed992daea8b9bcaccd",
+    "category": "Roman",
+    "era": "1st–2nd Century AD",
+    "context": "A marble sculpture of a reclining figure retrieved during excavations on Byrsa Hill in Carthage. Representing a banqueter or deity, showing the refined Hellenistic-Roman artistic synthesis prevalent in Roman Carthage.",
+    "highlights": [
+      "Hellenistic Influence",
+      "Banqueting Recline Pose",
+      "Byrsa Acropolis Excavations"
+    ],
+    "suggestedQuestions": [
+      "What ceremonial role did reclining statues play in Roman banquets?",
+      "What archaeological treasures were excavated on Byrsa Hill?",
+      "How did Greek Hellenism influence Roman African sculptors?"
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Carved Architectural Laurel Block",
+    "location": "Zaghouan",
+    "lat": 36.4011,
+    "lng": 10.1115,
+    "uid": "f263eb8d630c458f9c747380e803fd33",
+    "category": "Roman",
+    "era": "2nd Century AD",
+    "context": "A carved limestone frieze block featuring laurel leaf garlands and rosette motifs from the Nymphaeum of Zaghouan. Wreaths of laurel symbolized victory, divine protection, and purity at sacred water sources.",
+    "highlights": [
+      "Laurel Garlands & Rosettes",
+      "High Relief Limestone Carving",
+      "Water Temple Frieze"
+    ],
+    "suggestedQuestions": [
+      "What did laurel garlands symbolize in Roman religious architecture?",
+      "What tools did Roman stone carvers use for high-relief friezes?",
+      "How were stone blocks transported from quarries to Zaghouan?"
+    ]
   }
 ]

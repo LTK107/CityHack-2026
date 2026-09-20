@@ -1,14 +1,15 @@
 # Tanit XR
 
-An interactive map of 3D-scanned archaeological heritage across Tunisia. Click a
-pin and the full record opens over it -- scan preview, description and key
-features -- while **Mura**, a Gemini-backed guide, appears to talk you through it.
+An interactive map of 3D-scanned archaeological heritage across Tunisia. The map
+fills the left half of the screen; **Mura**, a Gemini-backed guide, stands in the
+right half and talks you through whatever you open. Clicking a pin opens the full
+record over it -- an auto-playing 3D scan, the description and the key features.
 
 The repo is an npm workspace with two packages:
 
 | Package  | Path      | What it is                                                        |
 | -------- | --------- | ----------------------------------------------------------------- |
-| `cityhack-web`    | `web/`    | Vite + React + Tailwind frontend: Leaflet map, Sketchfab inspector, guide chat |
+| `cityhack-web`    | `web/`    | Vite + React + Tailwind frontend: Leaflet map, pin cards, Mura the guide |
 | `cityhack-server` | `server/` | Express API over a JSON catalogue, plus a server-side Gemini proxy |
 
 There is no database. Site records live in `server/data/sites.json`.
@@ -69,6 +70,21 @@ message naming the offending record, rather than failing later on a request.
 
 `npm run dev` watches `server/data`, so editing the JSON restarts the API.
 
+### Checking the scans
+
+`npm run check:scans` calls Sketchfab's oEmbed API for every record and reports
+three kinds of problem:
+
+- **dead** — the model does not exist, so the embed would render Sketchfab's own
+  404 page inside the viewer. Set the record's `uid` to `null` and it shows the
+  "no scan linked yet" panel instead.
+- **mismatched** — the uid resolves, but to a different object than the record
+  names. The page looks fine until someone reads the label.
+- **reused** — several records share one uid, which usually means placeholder
+  data.
+
+The check needs network access and exits non-zero if any uid is dead.
+
 `sketchfabUid` is the id at the end of a Sketchfab model URL:
 
 ```
@@ -96,13 +112,29 @@ list:
   screen — so the map can frame the whole filtered set in one `fitBounds`. The
   unfiltered box is computed once at boot.
 
+### Keeping the pin's card in frame
+
+Leaflet anchors a popup to a geographic point, so zooming walks the card toward
+a corner and eventually off screen. `KeepPopupFramed` in `MapView.jsx` listens
+for `zoomend` and re-centres the view on the marker, offset by half the card's
+*measured* height, so the card stays centred and whole at any zoom. Leaflet's own
+`keepInView` covers dragging but not zooming, so both are used. The card itself
+is sized in viewport units (`min(18rem, 100vw - 5rem)`, `max-h-[min(24rem,48vh)]`)
+so it shrinks with the window instead of overflowing the map pane.
+
+While a pin is open, the fit-to-bounds behaviour is suspended — the view belongs
+to that pin until it is closed.
+
 ### Mura, the guide
 
-Clicking a pin brings up Mura at the bottom-right of the map, with her chat
-bubble over her head. She opens with a summary of the site and suggests three
-follow-up questions; visitors can also type to her freely. Clicking her avatar
-minimises and restores the bubble, and dismissing her is remembered for that
-site only -- the next pin brings her back.
+Mura occupies the right half of the screen, with her speech bubble sitting over
+her head and the figure beneath it. She is always present: before any pin is
+opened her bubble invites you to pick one and lists the featured scans, and once
+a site is open she summarises it, suggests three follow-up questions and takes
+free-text questions.
+
+There is no separate inspector panel and no "Inspect 3D Scan" step -- the pin's
+own card carries the record, so a click on the map is the only action needed.
 
 Her artwork is `web/public/mura.svg`. Replace that one file to change the
 avatar; nothing else references the drawing.
@@ -136,6 +168,7 @@ Run from the repo root:
 | `npm run build`   | Production build into `web/dist`                 |
 | `npm run preview` | Serve the built bundle                           |
 | `npm start`       | API without watch mode                           |
+| `npm run check:scans` | Validate every `uid` against Sketchfab       |
 
 ## API
 

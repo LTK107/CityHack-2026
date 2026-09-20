@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import L from 'leaflet';
-import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, ZoomControl, useMap } from 'react-leaflet';
 
 /** Centre of the Tunisian sites, used only until the first bounds fit lands. */
 const FALLBACK_CENTER = [36.65, 10.22];
@@ -51,14 +51,15 @@ const PIN_ACTIVE = makePin('#ef4444', '#991b1b');
  * Frames every matching pin. `bounds` comes from the API and covers the whole
  * filtered set, not just the page on screen, so the map always shows all of it.
  */
-function FitBounds({ bounds }) {
+function FitBounds({ bounds, suspended }) {
   const map = useMap();
   // A stable string key means the map refits when the extent genuinely changes,
   // not on every render that happens to rebuild the array.
   const key = bounds ? bounds.flat().join(',') : null;
 
   useEffect(() => {
-    if (!bounds) return;
+    // While a pin is open the view belongs to that pin, not to the whole set.
+    if (!bounds || suspended) return;
 
     const box = L.latLngBounds(bounds);
     if (box.getSouthWest().equals(box.getNorthEast())) {
@@ -67,96 +68,68 @@ function FitBounds({ bounds }) {
     }
     map.fitBounds(box, { padding: [64, 64], maxZoom: 15 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, map]);
-
-  return null;
-}
-
-/** Pans to a site when it is chosen, from the map or from the list. */
-function FlyToSite({ site }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!site?.hasLocation) return;
-    map.flyTo([site.lat, site.lng], 13, { duration: 1.2, easeLinearity: 0.25 });
-  }, [site, map]);
+  }, [key, suspended, map]);
 
   return null;
 }
 
 /**
- * The full record, over the pin: badges, the scan preview, the description and
- * its key features. `autostart=0` means Sketchfab paints its poster frame and
- * waits for a click, so opening a popup does not start loading a 3D scene.
+ * Flies to the chosen site and, when the selection was made in order to open
+ * the model page, reports arrival so the page opens once the camera has landed.
+ *
+ * This is the only thing that moves the camera on selection, so nothing
+ * competes for it.
  */
-function SitePopup({ site, onInspect }) {
-  const badge = [site.category, site.era].filter(Boolean).join(' · ');
+function FlyToSite({ site, shouldOpen, onArrived }) {
+  const map = useMap();
+  const siteId = site?.id ?? null;
 
-  return (
-    <div className="w-[300px] max-w-full">
-      <div className="max-h-[22rem] space-y-2.5 overflow-y-auto pr-1">
-        {badge && (
-          <span className="inline-block rounded bg-sky-500/15 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-sky-300 uppercase">
-            {badge}
-          </span>
-        )}
+  useEffect(() => {
+    if (!siteId) return;
 
-        <div>
-          <h4 className="font-serif-title text-base leading-tight font-bold text-slate-100">
-            {site.name}
-          </h4>
-          <p className="mt-0.5 text-[11px] text-slate-400">
-            {site.location}
-            {site.hasLocation && (
-              <span className="text-slate-500">
-                {site.location ? ' ' : ''}({site.lat.toFixed(4)}&deg;N, {site.lng.toFixed(4)}&deg;E)
-              </span>
-            )}
-          </p>
-        </div>
+    // Nothing to fly to, so the page may as well open straight away.
+    if (!site.hasLocation) {
+      if (shouldOpen) onArrived?.();
+      return;
+    }
 
-        {site.sketchfabUid && (
-          <div className="aspect-video w-full overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
-            <iframe
-              title={`3D scan preview of ${site.name}`}
-              src={`https://sketchfab.com/models/${encodeURIComponent(site.sketchfabUid)}/embed?autostart=0&ui_theme=dark&dnt=1&ui_infos=0&ui_controls=0&ui_watermark=0`}
-              className="h-full w-full border-0"
-              allow="autoplay; fullscreen; xr-spatial-tracking"
-              loading="lazy"
-            />
-          </div>
-        )}
+    const target = [site.lat, site.lng];
 
-        {site.context && (
-          <p className="text-[11px] leading-relaxed text-slate-300">{site.context}</p>
-        )}
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      map.setView(target, Math.max(map.getZoom(), 15));
+      if (shouldOpen) onArrived?.();
+      return;
+    }
 
-        {site.highlights?.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {site.highlights.map((feature) => (
-              <span
-                key={feature}
-                className="rounded border border-slate-700/80 bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300"
-              >
-                <span className="text-amber-400">&#10070;</span> {feature}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
+    map.flyTo(target, 15, { duration: 1.2, easeLinearity: 0.25 });
+    if (!shouldOpen) return;
 
-      <button
-        type="button"
-        onClick={() => onInspect(site)}
-        className="mt-2.5 w-full cursor-pointer rounded-md bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-sky-500"
-      >
-        Inspect 3D Scan &rarr;
-      </button>
-    </div>
-  );
+    // `moveend` does not fire reliably when a flight is interrupted, so the
+    // timeout is the backstop that guarantees the page still opens.
+    let settled = false;
+    const arrive = () => {
+      if (settled) return;
+      settled = true;
+      onArrived?.();
+    };
+
+    const timer = setTimeout(arrive, 1600);
+    map.once('moveend', arrive);
+
+    // Cancels a pending open when another pin is clicked mid-flight, or when
+    // the user presses Back before the camera lands.
+    return () => {
+      settled = true;
+      clearTimeout(timer);
+      map.off('moveend', arrive);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [siteId, shouldOpen, map]);
+
+  return null;
 }
 
-export default function MapView({ sites, selectedSite, onSelect, tile, bounds }) {
+export default function MapView({ sites, selectedSite, shouldOpen, onArrived, onSelect, tile, bounds }) {
   const placeable = useMemo(() => sites.filter((site) => site.hasLocation), [sites]);
   const layer = TILES[tile] ?? TILES.street;
 
@@ -172,8 +145,8 @@ export default function MapView({ sites, selectedSite, onSelect, tile, bounds })
       <TileLayer key={tile} url={layer.url} attribution={layer.attribution} maxZoom={layer.maxZoom} />
 
       <ZoomControl position="topright" />
-      <FitBounds bounds={bounds} />
-      <FlyToSite site={selectedSite} />
+      <FitBounds bounds={bounds} suspended={Boolean(selectedSite)} />
+      <FlyToSite site={selectedSite} shouldOpen={shouldOpen} onArrived={onArrived} />
 
       {placeable.map((site) => {
         const active = site.id === selectedSite?.id;
@@ -185,11 +158,7 @@ export default function MapView({ sites, selectedSite, onSelect, tile, bounds })
             icon={active ? PIN_ACTIVE : PIN}
             zIndexOffset={active ? 1000 : 0}
             eventHandlers={{ click: () => onSelect(site) }}
-          >
-            <Popup maxWidth={320} minWidth={300} autoPanPadding={[24, 24]}>
-              <SitePopup site={site} onInspect={onSelect} />
-            </Popup>
-          </Marker>
+          />
         );
       })}
     </MapContainer>

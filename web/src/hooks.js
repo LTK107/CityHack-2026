@@ -14,6 +14,37 @@ export function useDebounced(value, delay = 300) {
 }
 
 /**
+ * Which site the URL is pointing at, as `?site=<id>`.
+ *
+ * Built on the History API rather than a router dependency: the model page is a
+ * real URL, so the browser Back button returns to the map and a link can be
+ * pasted into a fresh tab.
+ */
+export function useRoute() {
+  const read = () => new URLSearchParams(window.location.search).get('site');
+  const [siteId, setSiteId] = useState(read);
+
+  useEffect(() => {
+    // Fires for Back/Forward, which push/replace do not raise themselves.
+    const sync = () => setSiteId(read());
+    window.addEventListener('popstate', sync);
+    return () => window.removeEventListener('popstate', sync);
+  }, []);
+
+  const openSite = useCallback((id) => {
+    window.history.pushState({ site: id }, '', `?site=${encodeURIComponent(id)}`);
+    setSiteId(String(id));
+  }, []);
+
+  const closeSite = useCallback(() => {
+    window.history.pushState({}, '', window.location.pathname);
+    setSiteId(null);
+  }, []);
+
+  return { siteId, openSite, closeSite };
+}
+
+/**
  * The Gemini-backed conversation about one site.
  *
  * Opening a site asks the API for its summary -- an empty message means

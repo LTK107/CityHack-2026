@@ -22,6 +22,7 @@ import { config } from './config.js';
  *   era           free-text dating, e.g. "2nd Century AD"
  *   context       long-form copy, also the guide's source material
  *   highlights    short feature bullets
+ *   suggestedQuestions  starter prompts offered by the guide
  *   sourceUrl     optional http(s) link; defaults to the Sketchfab model page
  */
 
@@ -55,6 +56,8 @@ const recordSchema = z.object({
   era: z.string().trim().max(120).nullish(),
   context: z.string().trim().max(8000).nullish(),
   highlights: z.array(z.string().trim().min(1).max(200)).max(24).nullish(),
+  // Hand-written openers the guide offers before the model suggests its own.
+  suggestedQuestions: z.array(z.string().trim().min(1).max(300)).max(12).nullish(),
   // http(s) only -- this value ends up in an href.
   sourceUrl: z.string().trim().max(2000).regex(HTTP_URL, 'must be an http(s) URL').nullish(),
 });
@@ -101,9 +104,17 @@ function normalise(record) {
     site.lat = record.lat;
     site.lng = record.lng;
   }
-  site.hasLocation = site.lat !== undefined;
+
+  // A record only earns a place on the map once it has a scan to open. Without
+  // a uid it stays in the catalogue -- listed, searchable, still openable from
+  // the explore strip -- but it gets no pin, and it is left out of the bounds
+  // the map fits to. The raw coordinates stay on the record for reference.
+  site.hasLocation = site.lat !== undefined && site.sketchfabUid !== undefined;
 
   if (record.highlights?.length) site.highlights = Object.freeze([...record.highlights]);
+  if (record.suggestedQuestions?.length) {
+    site.suggestedQuestions = Object.freeze([...record.suggestedQuestions]);
+  }
 
   // Every scan has a canonical public page; derive it rather than storing it twice.
   if (!site.sourceUrl && site.sketchfabUid) {

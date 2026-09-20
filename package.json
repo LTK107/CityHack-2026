@@ -16,7 +16,8 @@
     "dev:web": "npm run dev --workspace cityhack-web",
     "build": "npm run build --workspace cityhack-web",
     "preview": "npm run preview --workspace cityhack-web",
-    "start": "npm run start --workspace cityhack-server"
+    "start": "npm run start --workspace cityhack-server",
+    "check:scans": "npm run check:scans --workspace cityhack-server"
   },
   "devDependencies": {
     "concurrently": "^10.0.5"
