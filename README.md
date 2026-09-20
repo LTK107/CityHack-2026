@@ -1,7 +1,7 @@
 # Tanit XR
 
 An interactive map of 3D-scanned archaeological heritage across Tunisia. The map
-fills the left half of the screen; **Mura**, a Gemini-backed guide, stands in the
+fills the left half of the screen; **Mura**, a liteLLM-backed guide, stands in the
 right half and talks you through whatever you open. Clicking a pin opens the full
 record over it -- an auto-playing 3D scan, the description and the key features.
 
@@ -10,7 +10,7 @@ The repo is an npm workspace with two packages:
 | Package  | Path      | What it is                                                        |
 | -------- | --------- | ----------------------------------------------------------------- |
 | `cityhack-web`    | `web/`    | Vite + React + Tailwind frontend: Leaflet map, pin cards, Mura the guide |
-| `cityhack-server` | `server/` | Express API over a JSON catalogue, plus a server-side Gemini proxy |
+| `cityhack-server` | `server/` | Express API over a JSON catalogue, plus a server-side liteLLM proxy |
 
 There is no database. Site records live in `server/data/sites.json`.
 
@@ -18,7 +18,7 @@ There is no database. Site records live in `server/data/sites.json`.
 
 ```bash
 npm install                        # installs both workspaces
-cp server/.env.example server/.env # then add GEMINI_API_KEY
+cp server/.env.example server/.env # then add liteLLM_API_KEY
 npm run dev                        # API :4000 + frontend :5173
 ```
 
@@ -142,15 +142,15 @@ avatar; nothing else references the drawing.
 The conversation lives in the `useGuide` hook (`web/src/hooks.js`), so the chat
 logic is reusable if you want her somewhere else too.
 
-Gemini intermittently answers `503 UNAVAILABLE` ("high demand") to requests it
+LiteLLM intermittently answers `503 UNAVAILABLE` ("high demand") to requests it
 serves fine moments later, so `askGuide` retries transient statuses four times
 with exponential backoff and jitter. Genuine failures -- a bad key, a malformed
 request -- are rethrown at once rather than retried. If the upstream is having a
 bad day you may still see "the guide is unavailable"; Mura offers a retry
-button, and raising the attempt count in `server/src/lib/gemini.js` trades
+button, and raising the attempt count in `server/src/lib/liteLLM.js` trades
 latency for reliability.
 
-`/api/chat` returns 503 until `GEMINI_API_KEY` is set in `server/.env`. The key
+`/api/chat` returns 503 until `LITELLM_API_KEY` is set in `server/.env`. The key
 is used server-side only and must never reach the frontend bundle. Site facts —
 name, place, category, era, coordinates, highlights, context — are pulled from
 the catalogue, not from the request, so a client cannot feed the model invented
