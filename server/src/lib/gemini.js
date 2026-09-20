@@ -84,6 +84,32 @@ function parseResponse(raw) {
  * @param {Array<{role:'user'|'model', content:string}>} history
  * @param {string} message   The visitor's newest message.
  */
+/**
+ * Gemini intermittently answers 503 UNAVAILABLE ("high demand") even for
+ * requests it serves fine a moment later, so a single attempt drops a large
+ * share of conversations. Transient statuses are retried with exponential
+ * backoff and jitter; anything else (a bad key, a malformed request) is a real
+ * failure and is rethrown immediately.
+ */
+const TRANSIENT = /UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED|"code"\s*:\s*(429|500|503|504)/i;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function generateWithRetry(ai, request, attempts = 4) {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await ai.models.generateContent(request);
+    } catch (error) {
+      const retryable = TRANSIENT.test(String(error?.message ?? error));
+      if (!retryable || attempt >= attempts - 1) throw error;
+
+      const backoff = Math.round(400 * 2 ** attempt + Math.random() * 200);
+      console.warn(`[chat] gemini transient error, retry ${attempt + 1}/${attempts - 1} in ${backoff}ms`);
+      await sleep(backoff);
+    }
+  }
+}
+
 export async function askGuide(site, history, message) {
   const ai = getClient();
   if (!ai) return null;
@@ -100,7 +126,7 @@ export async function askGuide(site, history, message) {
     { role: 'user', parts: [{ text: message }] },
   ];
 
-  const response = await ai.models.generateContent({
+  const response = await generateWithRetry(ai, {
     model: config.gemini.model,
     contents,
     config: {

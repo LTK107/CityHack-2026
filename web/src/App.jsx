@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Inspector from './components/Inspector.jsx';
 import MapView from './components/MapView.jsx';
+import Mura from './components/Mura.jsx';
 import { fetchHealth, listCategories, listSites } from './api.js';
 import { useDebounced } from './hooks.js';
 
@@ -20,6 +21,8 @@ export default function App() {
   const [listError, setListError] = useState(null);
 
   const [selectedSite, setSelectedSite] = useState(null);
+  // Dismissal is per site, so closing Mura here does not mute her everywhere.
+  const [muraDismissedFor, setMuraDismissedFor] = useState(null);
 
   const debouncedSearch = useDebounced(searchQuery, 250);
 
@@ -232,6 +235,14 @@ export default function App() {
               </div>
             )}
           </div>
+
+          {selectedSite && muraDismissedFor !== selectedSite.id && (
+            <Mura
+              site={selectedSite}
+              enabled={guideEnabled}
+              onDismiss={() => setMuraDismissedFor(selectedSite.id)}
+            />
+          )}
         </div>
 
         <div
@@ -242,7 +253,6 @@ export default function App() {
           <Inspector
             site={selectedSite}
             sites={sites}
-            guideEnabled={guideEnabled}
             onClose={() => setSelectedSite(null)}
             onSelect={handleSelectSite}
           />

@@ -1,7 +1,8 @@
 # Tanit XR
 
-An interactive map of 3D-scanned archaeological heritage across Tunisia, with a
-Sketchfab inspector and an AI tour guide for each artifact.
+An interactive map of 3D-scanned archaeological heritage across Tunisia. Click a
+pin and the full record opens over it -- scan preview, description and key
+features -- while **Mura**, a Gemini-backed guide, appears to talk you through it.
 
 The repo is an npm workspace with two packages:
 
@@ -95,7 +96,27 @@ list:
   screen — so the map can frame the whole filtered set in one `fitBounds`. The
   unfiltered box is computed once at boot.
 
-### The AI guide
+### Mura, the guide
+
+Clicking a pin brings up Mura at the bottom-right of the map, with her chat
+bubble over her head. She opens with a summary of the site and suggests three
+follow-up questions; visitors can also type to her freely. Clicking her avatar
+minimises and restores the bubble, and dismissing her is remembered for that
+site only -- the next pin brings her back.
+
+Her artwork is `web/public/mura.svg`. Replace that one file to change the
+avatar; nothing else references the drawing.
+
+The conversation lives in the `useGuide` hook (`web/src/hooks.js`), so the chat
+logic is reusable if you want her somewhere else too.
+
+Gemini intermittently answers `503 UNAVAILABLE` ("high demand") to requests it
+serves fine moments later, so `askGuide` retries transient statuses four times
+with exponential backoff and jitter. Genuine failures -- a bad key, a malformed
+request -- are rethrown at once rather than retried. If the upstream is having a
+bad day you may still see "the guide is unavailable"; Mura offers a retry
+button, and raising the attempt count in `server/src/lib/gemini.js` trades
+latency for reliability.
 
 `/api/chat` returns 503 until `GEMINI_API_KEY` is set in `server/.env`. The key
 is used server-side only and must never reach the frontend bundle. Site facts —
@@ -137,8 +158,10 @@ in the server environment — the proxy only exists in dev.
 
 ## Notes
 
-- Basemaps are CARTO Voyager (street) and Esri World Imagery (satellite);
-  neither needs an API key.
+- Basemaps are OpenStreetMap (street) and Esri World Imagery (satellite),
+  neither of which needs an API key. CARTO's tiles still return HTTP 200 without
+  a key but paint an "API KEY REQUIRED" watermark across every tile, so they are
+  not used.
 - Map pins are CSS-drawn SVG `divIcon`s, which avoids the bundler-path problem
   Leaflet's default marker images have.
 - The dev server uses `strictPort`, so it fails loudly instead of sliding to

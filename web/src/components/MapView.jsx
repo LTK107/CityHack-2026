@@ -6,11 +6,16 @@ import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap } from 'rea
 const FALLBACK_CENTER = [36.65, 10.22];
 const FALLBACK_ZOOM = 9;
 
+/**
+ * Both basemaps are keyless. CARTO's tiles now return a watermarked
+ * "API KEY REQUIRED" image unless you register, so plain OpenStreetMap is used
+ * for the street layer instead.
+ */
 const TILES = {
   street: {
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
   },
   satellite: {
@@ -79,13 +84,85 @@ function FlyToSite({ site }) {
   return null;
 }
 
+/**
+ * The full record, over the pin: badges, the scan preview, the description and
+ * its key features. `autostart=0` means Sketchfab paints its poster frame and
+ * waits for a click, so opening a popup does not start loading a 3D scene.
+ */
+function SitePopup({ site, onInspect }) {
+  const badge = [site.category, site.era].filter(Boolean).join(' · ');
+
+  return (
+    <div className="w-[300px] max-w-full">
+      <div className="max-h-[22rem] space-y-2.5 overflow-y-auto pr-1">
+        {badge && (
+          <span className="inline-block rounded bg-sky-500/15 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-sky-300 uppercase">
+            {badge}
+          </span>
+        )}
+
+        <div>
+          <h4 className="font-serif-title text-base leading-tight font-bold text-slate-100">
+            {site.name}
+          </h4>
+          <p className="mt-0.5 text-[11px] text-slate-400">
+            {site.location}
+            {site.hasLocation && (
+              <span className="text-slate-500">
+                {site.location ? ' ' : ''}({site.lat.toFixed(4)}&deg;N, {site.lng.toFixed(4)}&deg;E)
+              </span>
+            )}
+          </p>
+        </div>
+
+        {site.sketchfabUid && (
+          <div className="aspect-video w-full overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
+            <iframe
+              title={`3D scan preview of ${site.name}`}
+              src={`https://sketchfab.com/models/${encodeURIComponent(site.sketchfabUid)}/embed?autostart=0&ui_theme=dark&dnt=1&ui_infos=0&ui_controls=0&ui_watermark=0`}
+              className="h-full w-full border-0"
+              allow="autoplay; fullscreen; xr-spatial-tracking"
+              loading="lazy"
+            />
+          </div>
+        )}
+
+        {site.context && (
+          <p className="text-[11px] leading-relaxed text-slate-300">{site.context}</p>
+        )}
+
+        {site.highlights?.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {site.highlights.map((feature) => (
+              <span
+                key={feature}
+                className="rounded border border-slate-700/80 bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300"
+              >
+                <span className="text-amber-400">&#10070;</span> {feature}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => onInspect(site)}
+        className="mt-2.5 w-full cursor-pointer rounded-md bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-sky-500"
+      >
+        Inspect 3D Scan &rarr;
+      </button>
+    </div>
+  );
+}
+
 export default function MapView({ sites, selectedSite, onSelect, tile, bounds }) {
   const placeable = useMemo(() => sites.filter((site) => site.hasLocation), [sites]);
   const layer = TILES[tile] ?? TILES.street;
 
   return (
     <MapContainer
-      className="h-full w-full z-10"
+      className="z-10 h-full w-full"
       center={FALLBACK_CENTER}
       zoom={FALLBACK_ZOOM}
       scrollWheelZoom
@@ -109,25 +186,8 @@ export default function MapView({ sites, selectedSite, onSelect, tile, bounds })
             zIndexOffset={active ? 1000 : 0}
             eventHandlers={{ click: () => onSelect(site) }}
           >
-            <Popup>
-              <div className="min-w-[180px]">
-                {site.category && (
-                  <span className="inline-block rounded bg-sky-500/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sky-300">
-                    {site.category}
-                  </span>
-                )}
-                <h4 className="mt-1 text-sm font-bold text-slate-100">{site.name}</h4>
-                {site.location && (
-                  <p className="mb-2 text-xs text-slate-400">{site.location}</p>
-                )}
-                <button
-                  type="button"
-                  onClick={() => onSelect(site)}
-                  className="w-full cursor-pointer rounded-md bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-sky-500"
-                >
-                  Inspect 3D Scan &rarr;
-                </button>
-              </div>
+            <Popup maxWidth={320} minWidth={300} autoPanPadding={[24, 24]}>
+              <SitePopup site={site} onInspect={onSelect} />
             </Popup>
           </Marker>
         );
