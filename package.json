@@ -1,0 +1,25 @@
+{
+  "name": "cityhack-2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CityHack 2026 heritage map -- Vite/React frontend and the Express API that serves it.",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c cyan,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev --workspace cityhack-server",
+    "dev:web": "npm run dev --workspace cityhack-web",
+    "build": "npm run build --workspace cityhack-web",
+    "preview": "npm run preview --workspace cityhack-web",
+    "start": "npm run start --workspace cityhack-server",
+    "db:introspect": "npm run db:introspect --workspace cityhack-server"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
