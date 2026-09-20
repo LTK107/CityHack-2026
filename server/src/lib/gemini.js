@@ -12,23 +12,17 @@ function getClient() {
 /**
  * Site facts are rendered as a plain labelled block rather than pasted as free
  * prose, and the system instruction tells the model to treat it strictly as
- * reference data. Database content is still untrusted input to the model.
+ * reference data. Catalogue content is still untrusted input to the model.
  */
 function factSheet(site) {
   const lines = [
     ['Name', site.name],
+    ['Location', site.location],
     ['Category', site.category],
-    ['Address', site.address],
-    ['Year built', site.yearBuilt],
-    ['Admission', site.admissionCost !== undefined
-      ? (site.admissionCost === 0 ? 'Free' : `${site.admissionCost} ${site.currency ?? 'USD'}`)
-      : undefined],
-    ['Opening hours', site.openingHours],
-    ['Typical visit', site.visitDurationMinutes ? `${site.visitDurationMinutes} minutes` : undefined],
-    ['Accessibility', site.accessibility],
-    ['Coordinates', site.hasLocation ? `${site.latitude}, ${site.longitude}` : undefined],
-    ['Summary', site.shortDescription],
-    ['Details', site.description],
+    ['Era', site.era],
+    ['Coordinates', site.hasLocation ? `${site.lat}, ${site.lng}` : undefined],
+    ['Key features', site.highlights?.join('; ')],
+    ['Context', site.context],
   ];
 
   return lines

@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 /**
@@ -11,16 +13,15 @@ const csv = (value) =>
     .map((part) => part.trim())
     .filter(Boolean);
 
+/** Paths resolve against the server package, not the shell's working directory. */
+const serverRoot = fileURLToPath(new URL('..', import.meta.url));
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().min(1).max(65535).default(4000),
 
-  // Postgres. The app only ever needs SELECT -- see README for the read-only role.
-  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
-  PGSSL: z
-    .enum(['disable', 'require', 'no-verify'])
-    .default('disable'),
-  PG_POOL_MAX: z.coerce.number().int().min(1).max(50).default(10),
+  // The site catalogue. Relative paths are resolved against the server package.
+  SITES_FILE: z.string().min(1).default('data/sites.json'),
 
   // Browsers that may call this API. Never "*" -- credentials are refused below.
   CORS_ORIGINS: z.string().default('http://localhost:5173'),
@@ -55,16 +56,7 @@ export const config = {
   isProd: env.NODE_ENV === 'production',
   port: env.PORT,
 
-  db: {
-    connectionString: env.DATABASE_URL,
-    // "require" trusts the server cert; "no-verify" is for managed hosts that
-    // hand out self-signed certs (Heroku, some Supabase/Neon setups).
-    ssl:
-      env.PGSSL === 'disable'
-        ? false
-        : { rejectUnauthorized: env.PGSSL === 'require' },
-    max: env.PG_POOL_MAX,
-  },
+  sitesFile: path.resolve(serverRoot, env.SITES_FILE),
 
   corsOrigins: csv(env.CORS_ORIGINS),
 

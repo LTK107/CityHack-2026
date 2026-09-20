@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "API for the CityHack 2026 heritage map: serves site/model records from PostgreSQL and proxies the Gemini tour-guide chatbot.",
+  "description": "API for the CityHack 2026 heritage catalogue: serves site records from data/sites.json and proxies the Gemini tour-guide chatbot.",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "start": "node src/index.js",
-    "db:introspect": "node scripts/introspect.js"
+    "dev": "node --watch-path=src --watch-path=data src/index.js",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "@google/genai": "^2.23.0",
@@ -20,7 +19,6 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
-    "pg": "^8.23.0",
     "zod": "^4.6.5"
   }
 }

@@ -1,10 +1,9 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { config } from '../config.js';
-import { query } from '../db.js';
+import { getSite } from '../map.js';
 import { asyncRoute, badRequest, notFound, unavailable } from '../lib/errors.js';
 import { askGuide, summaryPrompt } from '../lib/gemini.js';
-import { COLUMNS, columnFor, qualifiedTable, selectList, toSite } from '../mapping.js';
 
 export const chatRouter = Router();
 
@@ -23,17 +22,6 @@ const chatSchema = z.object({
     .default([]),
 });
 
-async function loadSite(id) {
-  const lookups = [`${columnFor('id')}::text = $1`];
-  if (COLUMNS.slug) lookups.push(`${columnFor('slug')} = $1`);
-
-  const { rows } = await query(
-    `SELECT ${selectList} FROM ${qualifiedTable} t WHERE ${lookups.join(' OR ')} LIMIT 1`,
-    [id],
-  );
-  return toSite(rows[0]);
-}
-
 chatRouter.post(
   '/',
   asyncRoute(async (req, res) => {
@@ -50,9 +38,9 @@ chatRouter.post(
       throw unavailable('The guide is offline: GEMINI_API_KEY is not configured on the server.');
     }
 
-    // Context is fetched server-side so the client cannot feed the model
-    // fabricated facts about a location.
-    const site = await loadSite(siteId);
+    // Context comes from the catalogue, not the request, so the client cannot
+    // feed the model fabricated facts about a location.
+    const site = getSite(siteId);
     if (!site) throw notFound(`No site matches "${siteId}"`);
 
     const message = parsed.data.message?.trim() || summaryPrompt(site);

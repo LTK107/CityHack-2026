@@ -1,0 +1,62 @@
+[
+  {
+    "id": "stone-basin-water-temple",
+    "name": "Stone Basin – Water Temple",
+    "location": "Zaghouan",
+    "lat": 36.3986,
+    "lng": 10.1069,
+    "sketchfabUid": "27c2c2c4260b4b529b8692d93dec841b",
+    "category": "Roman",
+    "era": "2nd Century AD",
+    "context": "A carved stone basin located at the Roman Temple of Water in Zaghouan. This site collected mountain spring waters to supply ancient Carthage through a 132km-long aqueduct system, representing one of the greatest hydraulic engineering feats of antiquity.",
+    "highlights": ["Sanctuary of Nymphs", "Aqueduct Source", "Carved Limestone Architecture"]
+  },
+  {
+    "id": "traditional-door-medina",
+    "name": "Traditional Door – Medina of Tunis",
+    "location": "Tunis Medina",
+    "lat": 36.7989,
+    "lng": 10.1707,
+    "sketchfabUid": "fc33fb7304074639ba0d2736b665e8fd",
+    "category": "Architecture",
+    "era": "Ottoman / Vernacular",
+    "context": "A classic studded yellow wooden door inside the UNESCO World Heritage Medina of Tunis. Featuring heavy black iron studs, symbol motifs (like the hand of Fatima or fish for good fortune), and two or three distinct knocker rings for guests, family, or servants.",
+    "highlights": ["Wrought-Iron Black Studs", "Yellow Ochre Finish", "Symbolic Door Knockers"]
+  },
+  {
+    "id": "tanit-stela-tophet",
+    "name": "Tanit Stela – Tophet of Salammbo",
+    "location": "Carthage",
+    "lat": 36.8403,
+    "lng": 10.3228,
+    "sketchfabUid": "71e2a8a4ac67450c9fe375e183979ac0",
+    "category": "Punic",
+    "era": "4th–3rd Century BC",
+    "context": "A Punic votive stela from the sacred Tophet of Salammbo in ancient Carthage. Carved with the sacred Sign of Tanit—the chief goddess of fertility and the heavens in Carthaginian mythology—alongside crescent moon iconography.",
+    "highlights": ["Sign of Tanit Emblem", "Punic Votive Marker", "Sacred Sanctuary Site"]
+  },
+  {
+    "id": "ornamental-mihrab-slimanya",
+    "name": "Ornamental Mihrab – Medersa Slimanya",
+    "location": "Tunis Medina",
+    "lat": 36.7972,
+    "lng": 10.1712,
+    "sketchfabUid": "11f7430ffd5e4c93858e1c3ec47a6969",
+    "category": "Islamic",
+    "era": "1754 AD (Husainid Dynasty)",
+    "context": "An intricate ornamental prayer niche (Mihrab) located inside Medersa Slimanya in the Medina of Tunis. Built by Ali Pasha in memory of his son, featuring polychrome marble paneling, hand-carved stucco artwork, and geometric calligraphy.",
+    "highlights": ["Husainid Stucco Carvings", "Polychrome Marble Interiors", "Geometric Islamic Calligraphy"]
+  },
+  {
+    "id": "roman-togatus-byrsa",
+    "name": "Roman Togatus Statue – Byrsa Hill",
+    "location": "Carthage Museum",
+    "lat": 36.8525,
+    "lng": 10.3236,
+    "sketchfabUid": "6999dd0aa173410d8e7589a91bf8c986",
+    "category": "Roman",
+    "era": "2nd Century AD",
+    "context": "A magnificent life-sized marble statue depicting a Roman official or dignitary wearing a formal toga (Togatus). Discovered on Byrsa Hill, the acropolis of ancient Carthage, highlighting imperial Roman presence and artistry in North Africa.",
+    "highlights": ["Proconsular Carthage Marble", "Intricate Drapery Sculpture", "Byrsa Hill Discovery"]
+  }
+]

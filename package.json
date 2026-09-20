@@ -16,10 +16,12 @@
     "dev:web": "npm run dev --workspace cityhack-web",
     "build": "npm run build --workspace cityhack-web",
     "preview": "npm run preview --workspace cityhack-web",
-    "start": "npm run start --workspace cityhack-server",
-    "db:introspect": "npm run db:introspect --workspace cityhack-server"
+    "start": "npm run start --workspace cityhack-server"
   },
   "devDependencies": {
     "concurrently": "^10.0.5"
+  },
+  "dependencies": {
+    "bui": "^0.1.16"
   }
 }
