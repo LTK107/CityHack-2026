@@ -26,9 +26,11 @@ const envSchema = z.object({
   // Browsers that may call this API. Never "*" -- credentials are refused below.
   CORS_ORIGINS: z.string().default('http://localhost:5173'),
 
-  // Gemini key stays server-side. It must never reach the client bundle.
-  GEMINI_API_KEY: z.string().optional(),
-  GEMINI_MODEL: z.string().default('gemini-flash-latest'),
+  // LLM gateway (NaviGator AI, an OpenAI-compatible LiteLLM proxy). The key stays
+  // server-side and must never reach the client bundle.
+  LLM_API_KEY: z.string().optional(),
+  LLM_BASE_URL: z.string().url().default('https://api.ai.it.ufl.edu/v1'),
+  LLM_MODEL: z.string().default('gpt-oss-120b'),
 
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120),
@@ -60,10 +62,11 @@ export const config = {
 
   corsOrigins: csv(env.CORS_ORIGINS),
 
-  gemini: {
-    apiKey: env.GEMINI_API_KEY || null,
-    model: env.GEMINI_MODEL,
-    enabled: Boolean(env.GEMINI_API_KEY),
+  llm: {
+    apiKey: env.LLM_API_KEY || null,
+    baseUrl: env.LLM_BASE_URL,
+    model: env.LLM_MODEL,
+    enabled: Boolean(env.LLM_API_KEY),
   },
 
   rateLimit: {

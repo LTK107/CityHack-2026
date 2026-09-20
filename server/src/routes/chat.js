@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { config } from '../config.js';
 import { getSite } from '../map.js';
 import { asyncRoute, badRequest, notFound, unavailable } from '../lib/errors.js';
-import { askGuide, summaryPrompt } from '../lib/gemini.js';
+import { askGuide, summaryPrompt } from '../lib/llm.js';
 
 export const chatRouter = Router();
 
@@ -34,8 +34,8 @@ chatRouter.post(
     }
     const { siteId, history } = parsed.data;
 
-    if (!config.gemini.enabled) {
-      throw unavailable('The guide is offline: GEMINI_API_KEY is not configured on the server.');
+    if (!config.llm.enabled) {
+      throw unavailable('The guide is offline: LLM_API_KEY is not configured on the server.');
     }
 
     // Context comes from the catalogue, not the request, so the client cannot
@@ -50,7 +50,7 @@ chatRouter.post(
       result = await askGuide(site, history, message);
     } catch (error) {
       // Upstream errors can carry the API key's quota details -- log, don't forward.
-      console.error('[chat] gemini request failed:', error?.message ?? error);
+      console.error('[chat] llm request failed:', error?.message ?? error);
       throw unavailable('The guide is unavailable right now. Please try again shortly.');
     }
 

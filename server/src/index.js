@@ -26,7 +26,7 @@ app.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
     sites: siteCount,
-    guide: config.gemini.enabled ? 'configured' : 'disabled',
+    guide: config.llm.enabled ? 'configured' : 'disabled',
   });
 });
 
@@ -41,8 +41,8 @@ const server = app.listen(config.port, () => {
   console.log(`[api] listening on http://localhost:${config.port} (${config.env})`);
   console.log(`[api] catalogue: ${siteCount} sites from ${config.sitesFile}`);
   console.log(`[api] cors origins: ${config.corsOrigins.join(', ')}`);
-  if (!config.gemini.enabled) {
-    console.warn('[api] GEMINI_API_KEY not set -- /api/chat will return 503.');
+  if (!config.llm.enabled) {
+    console.warn('[api] LLM_API_KEY not set -- /api/chat will return 503.');
   }
 });
 
